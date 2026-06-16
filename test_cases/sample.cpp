@@ -6,8 +6,18 @@ int main() {
     cin >> n;
 
     for (int i = 0; i < n; i++) {
-        cout << i << endl;
+        if (i % 2 == 0) 
+        {
+            cout << i << " is even\n";
+        } 
+        else 
+        {
+            cout << i << " is odd\n";
+        }
     }
-
+    while(n > 0) 
+    {
+        n--;
+    }
     return 0;
 }
