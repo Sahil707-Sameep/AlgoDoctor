@@ -5,19 +5,24 @@ int main() {
     int n;
     cin >> n;
 
-    for (int i = 0; i < n; i++) {
-        if (i % 2 == 0) 
+    for (int i = 0; i < n; i++) 
+       {
+        for(int j = 0; j < i; j++)
         {
-            cout << i << " is even\n";
-        } 
-        else 
-        {
-            cout << i << " is odd\n";
+            cout << "*";
+            cout << "\n";
         }
     }
-    while(n > 0) 
-    {
-        n--;
-    }
     return 0;
+    while(n<0)
+    {
+        if(n%2==0)
+        {
+            cout << n << " is even\n";
+        }
+        else
+        {
+            cout << n << " is odd\n";
+        }
+    }
 }

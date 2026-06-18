@@ -45,11 +45,12 @@ int main(int argc, char* argv[]) {
     int forCount   = 0;
     int whileCount = 0;
     int ifCount    = 0;
-
+    int elseCount  = 0;
     for (const Token& tok : tokens) {
         if (tok.type == TokenType::FOR)   forCount++;
         if (tok.type == TokenType::WHILE) whileCount++;
         if (tok.type == TokenType::IF)    ifCount++;
+        if (tok.type == TokenType::ELSE)  elseCount++;
     }
 
     // Step 4: Print results
@@ -59,6 +60,7 @@ int main(int argc, char* argv[]) {
     cout << "  for   loops  : " << forCount   << "\n";
     cout << "  while loops  : " << whileCount << "\n";
     cout << "  if statements: " << ifCount    << "\n";
+    cout << "  else statements: "<< elseCount << "\n";
     cout << "---------------------------------------\n";
     cout << "  Total tokens : " << tokens.size() - 1 << "\n";
     cout << "=======================================\n\n";
