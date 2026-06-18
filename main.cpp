@@ -1,39 +1,67 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <string>
+#include "src/lexer.h"
 
 using namespace std;
 
-int main() {
-   ifstream file("test_cases/sample.cpp");
-
+// Reads entire file into a single string
+string readFile(const string& path) {
+    ifstream file(path);
     if (!file.is_open()) {
-        cout << "Could not open sample.cpp" << endl;
-        return 1;
+        cout << "Could not open file: " << path << "\n";
+        exit(1);
+    }
+    stringstream buffer;
+    buffer << file.rdbuf();
+    file.close();
+    return buffer.str();
+}
+
+int main(int argc, char* argv[]) {
+
+    // Default to test_cases/sample.cpp if no argument given
+    string filepath = "test_cases/sample.cpp";
+    if (argc >= 2) {
+        filepath = argv[1];
     }
 
+    cout << "\n";
+    cout << "=======================================\n";
+    cout << "        AlgoDoctor v1.0\n";
+    cout << "=======================================\n";
+    cout << "File: " << filepath << "\n\n";
+
+    // Step 1: Read the file
+    string source = readFile(filepath);
     cout << "File opened successfully!\n\n";
 
-    string line;
-    int forcount=0;
-    int whilecount=0;
-    int ifcount=0;
-    while (getline(file, line)) {
-        if (line.find("for") != string::npos) {
-            forcount++;
-        }
-        if (line.find("while") != string::npos) {
-            whilecount++;
-        }
-        if (line.find("if") != string::npos) {
-            ifcount++;
-        }
+    // Step 2: Tokenize
+    Lexer lexer(source);
+    vector<Token> tokens = lexer.tokenize();
+
+    // Step 3: Count constructs from tokens (not raw string search!)
+    int forCount   = 0;
+    int whileCount = 0;
+    int ifCount    = 0;
+
+    for (const Token& tok : tokens) {
+        if (tok.type == TokenType::FOR)   forCount++;
+        if (tok.type == TokenType::WHILE) whileCount++;
+        if (tok.type == TokenType::IF)    ifCount++;
     }
 
-    cout << "Number of 'for' loops found: " << forcount << endl;
-    cout << "Number of 'while' loops found: " << whilecount << endl;
-    cout << "Number of 'if' statements found: " << ifcount << endl;
+    // Step 4: Print results
+    cout << "---------------------------------------\n";
+    cout << "  Constructs Found:\n";
+    cout << "---------------------------------------\n";
+    cout << "  for   loops  : " << forCount   << "\n";
+    cout << "  while loops  : " << whileCount << "\n";
+    cout << "  if statements: " << ifCount    << "\n";
+    cout << "---------------------------------------\n";
+    cout << "  Total tokens : " << tokens.size() - 1 << "\n";
+    cout << "=======================================\n\n";
 
-    file.close();
     return 0;
 }
